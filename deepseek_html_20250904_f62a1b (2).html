@@ -1,0 +1,588 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>For My Beautiful Fundayee</title>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Playfair+Display:wght@400;700&family=Raleway:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Raleway', sans-serif;
+            background: linear-gradient(135deg, #ff9a9e 0%, #fad0c4 100%);
+            color: #6d3b47;
+            overflow-x: hidden;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        
+        .container {
+            width: 100%;
+            max-width: 900px;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 20px;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2);
+            overflow: hidden;
+            position: relative;
+            padding: 30px;
+            text-align: center;
+        }
+        
+        .page {
+            display: none;
+            animation: fadeIn 1s ease;
+        }
+        
+        .active {
+            display: block;
+        }
+        
+        h1 {
+            font-family: 'Dancing Script', cursive;
+            font-size: 3.5rem;
+            color: #d44d5c;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+            margin-bottom: 20px;
+        }
+        
+        p {
+            font-size: 1.2rem;
+            line-height: 1.6;
+            margin-bottom: 25px;
+        }
+        
+        .heart {
+            color: #d44d5c;
+            animation: pulse 2s infinite;
+            margin: 0 5px;
+        }
+        
+        .puzzle-container {
+            background: rgba(255, 255, 255, 0.7);
+            border-radius: 15px;
+            padding: 25px;
+            margin: 30px 0;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+        }
+        
+        .puzzle-title {
+            font-family: 'Playfair Display', serif;
+            color: #d44d5c;
+            font-size: 1.8rem;
+            margin-bottom: 20px;
+        }
+        
+        .input-group {
+            margin: 20px 0;
+        }
+        
+        input {
+            padding: 15px;
+            width: 100%;
+            max-width: 400px;
+            border: 2px solid #d44d5c;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            text-align: center;
+            outline: none;
+            transition: all 0.3s;
+        }
+        
+        input:focus {
+            box-shadow: 0 0 15px rgba(212, 77, 92, 0.5);
+        }
+        
+        button {
+            background: linear-gradient(45deg, #d44d5c, #ff7c8a);
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            font-size: 1.2rem;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-top: 15px;
+            box-shadow: 0 5px 15px rgba(212, 77, 92, 0.4);
+        }
+        
+        button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 8px 20px rgba(212, 77, 92, 0.6);
+        }
+        
+        .hearts-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+        }
+        
+        .floating-heart {
+            position: absolute;
+            font-size: 2rem;
+            color: #ff7c8a;
+            opacity: 0.7;
+            animation: float 10s linear infinite;
+        }
+        
+        .message {
+            background: rgba(255, 255, 255, 0.8);
+            border-radius: 15px;
+            padding: 25px;
+            margin: 25px 0;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            transform-style: preserve-3d;
+            transition: transform 0.5s;
+        }
+        
+        .message:hover {
+            transform: rotateY(5deg) rotateX(5deg);
+        }
+        
+        .hint {
+            color: #8E54E9;
+            font-style: italic;
+            margin-top: 15px;
+            font-size: 1rem;
+        }
+        
+        .gift-container {
+            margin: 30px 0;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.7);
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .gift-title {
+            font-family: 'Playfair Display', serif;
+            color: #d44d5c;
+            font-size: 1.8rem;
+            margin-bottom: 20px;
+        }
+        
+        .rose-image {
+            width: 100%;
+            max-width: 400px;
+            height: 300px;
+            border-radius: 15px;
+            object-fit: cover;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+            margin: 15px 0;
+            transition: transform 0.5s;
+        }
+        
+        .rose-image:hover {
+            transform: scale(1.03);
+        }
+        
+        @keyframes float {
+            0% {
+                top: 100%;
+                transform: translateX(0) rotate(0deg);
+            }
+            100% {
+                top: -10%;
+                transform: translateX(100px) rotate(360deg);
+            }
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+            100% { transform: scale(1); }
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .success-animation {
+            animation: success 1s ease;
+        }
+        
+        @keyframes success {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+        
+        .final-message {
+            font-family: 'Dancing Script', cursive;
+            font-size: 1.8rem;
+            color: #d44d5c;
+            margin: 30px 0;
+            line-height: 1.8;
+            text-align: left;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.7);
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            z-index: 2;
+            position: relative;
+        }
+        
+        .signature {
+            text-align: right;
+            font-family: 'Dancing Script', cursive;
+            font-size: 2.2rem;
+            color: #d44d5c;
+            margin-top: 20px;
+            z-index: 2;
+            position: relative;
+        }
+        
+        .red-roses-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url('https://images.unsplash.com/photo-1518895949257-7621c3c786d7?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80');
+            background-size: cover;
+            background-position: center;
+            opacity: 0.2;
+            z-index: 1;
+        }
+        
+        .rose {
+            position: absolute;
+            font-size: 2rem;
+            color: #d44d5c;
+            opacity: 0.7;
+            z-index: 1;
+            animation: float 15s linear infinite;
+        }
+        
+        .rose-gif {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 200px;
+            background: url('https://i.gifer.com/7Uxj.gif') center top no-repeat;
+            background-size: cover;
+            z-index: 1000;
+            pointer-events: none;
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px;
+                margin: 10px;
+            }
+            
+            h1 {
+                font-size: 2.5rem;
+            }
+            
+            p {
+                font-size: 1.1rem;
+            }
+            
+            .final-message {
+                font-size: 1.5rem;
+            }
+            
+            .rose-image {
+                height: 250px;
+            }
+            
+            .rose-gif {
+                height: 150px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="hearts-container" id="hearts"></div>
+    <div class="rose-gif" id="roseGif" style="display: none;"></div>
+    
+    <div class="container">
+        <!-- Page 1: Initial Message -->
+        <div class="page active" id="page1">
+            <h1>For My Beautiful Fundayee <i class="fas fa-heart heart"></i></h1>
+            <p>My love, I've created something special just for you. To unlock my messages of love and appreciation, you'll need to solve some puzzles.</p>
+            <p>Each puzzle will reveal a special gift for you. Are you ready to begin?</p>
+            
+            <div class="puzzle-container">
+                <h2 class="puzzle-title">Puzzle 1: My Favorite Color</h2>
+                <p>What is my favorite color? (Think about what I wear most often)</p>
+                
+                <div class="input-group">
+                    <input type="text" id="puzzle1-answer" placeholder="Enter your answer">
+                </div>
+                
+                <button onclick="checkPuzzle(1)">Unlock My Gift</button>
+                <p class="hint">Hint: It's the color of mystery and elegance</p>
+            </div>
+        </div>
+        
+        <!-- Page 2: First Gift -->
+        <div class="page" id="page2">
+            <h1>You Did It! <i class="fas fa-heart heart"></i></h1>
+            <p>I knew you could solve it! You're as smart as you are beautiful.</p>
+            
+            <div class="message">
+                <h3>What I Love About You</h3>
+                <p>Your smile brightens my darkest days. Your laughter is my favorite melody. Your kindness inspires me to be a better person every single day.</p>
+            </div>
+            
+            <div class="gift-container">
+                <h2 class="gift-title">Your Gift: Pink Roses</h2>
+                <p>Pink roses symbolize admiration, joy, and gratitude. I'm so grateful to have you in my life!</p>
+                <img src="https://images.unsplash.com/photo-1563241527-3004b7be0ffd?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="Beautiful pink roses" class="rose-image">
+            </div>
+            
+            <div class="puzzle-container">
+                <h2 class="puzzle-title">Puzzle 2: Special Name</h2>
+                <p>What is my favorite cuddle name that I use for you?</p>
+                
+                <div class="input-group">
+                    <input type="text" id="puzzle2-answer" placeholder="Enter your answer">
+                </div>
+                
+                <button onclick="checkPuzzle(2)">Unlock Next Gift</button>
+                <p class="hint">Hint: It's a unique name that only I call you</p>
+            </div>
+        </div>
+        
+        <!-- Page 3: Second Gift -->
+        <div class="page" id="page3">
+            <h1>Amazing! <i class="fas fa-heart heart"></i></h1>
+            <p>You're incredible! I'm so lucky to have someone as clever as you.</p>
+            
+            <div class="message">
+                <h3>You Are Amazing</h3>
+                <p>I see how hard you work and how much you care. Your strength and resilience constantly amaze me. Never forget how incredible you are.</p>
+            </div>
+            
+            <div class="gift-container">
+                <h2 class="gift-title">Your Gift: White Roses</h2>
+                <p>White roses represent purity, innocence, and new beginnings. Every day with you feels like a new beginning!</p>
+                <img src="https://images.unsplash.com/photo-1597826368522-9f4cb5a6ba48?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="Beautiful white roses" class="rose-image">
+            </div>
+            
+            <div class="puzzle-container">
+                <h2 class="puzzle-title">Puzzle 3: What You Mean to Me</h2>
+                <p>What is "funda" to me? (What do you represent in my life?)</p>
+                
+                <div class="input-group">
+                    <input type="text" id="puzzle3-answer" placeholder="Enter your answer">
+                </div>
+                
+                <button onclick="checkPuzzle(3)">Unlock Final Gift</button>
+                <p class="hint">Hint: It's a word that means the whole world</p>
+            </div>
+        </div>
+        
+        <!-- Page 4: Third Gift -->
+        <div class="page" id="page4">
+            <h1>Wonderful! <i class="fas fa-heart heart"></i></h1>
+            <p>You've solved all the puzzles! You truly know me better than anyone.</p>
+            
+            <div class="message">
+                <h3>My Promise to You</h3>
+                <p>I will always be here for you, through good times and bad. I'll support your dreams, wipe your tears, and celebrate your successes.</p>
+            </div>
+            
+            <div class="gift-container">
+                <h2 class="gift-title">Your Gift: Red Roses</h2>
+                <p>Red roses symbolize deep love, passion, and romance. My love for you grows stronger every day!</p>
+                <img src="https://images.unsplash.com/photo-1590071089561-2085c1d8d6bd?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="Beautiful red roses" class="rose-image">
+            </div>
+            
+            <button onclick="checkPuzzle(4)">See My Final Message</button>
+        </div>
+        
+        <!-- Final Page -->
+        <div class="page" id="final-page">
+            <div class="red-roses-bg"></div>
+            <h1>Congratulations, My Love! <i class="fas fa-heart heart"></i></h1>
+            <p>You've unlocked all my messages and gifts. Now for my final words to you...</p>
+            
+            <div class="final-message">
+                <p>Hello my dearest fundayee,</p>
+                <p>The day I met u I didn't knew u will be the most important person in my life. Day and night I realises it every time, All those memories u have given to me and all those good moments are more than memories to me.in this moment I am thanking god for having u in my life and blessed to be with u in this beautiful ride known as life. May this day make ur day bright as ur future my love. I will be with u in ur life no matter wat problems occur between us . I will never give up on u.</p>
+            </div>
+            
+            <div class="signature">
+                Yours only,<br>
+                Issac
+            </div>
+            
+            <button onclick="resetPuzzles()">Start Over</button>
+            
+            <!-- Floating roses for background -->
+            <div id="roses-container"></div>
+        </div>
+    </div>
+
+    <script>
+        // Create floating hearts
+        function createHearts() {
+            const container = document.getElementById('hearts');
+            const heartSymbols = ['❤️', '💖', '💕', '💗', '💓', '💘'];
+            
+            for (let i = 0; i < 15; i++) {
+                const heart = document.createElement('div');
+                heart.classList.add('floating-heart');
+                heart.innerHTML = heartSymbols[Math.floor(Math.random() * heartSymbols.length)];
+                
+                // Random properties
+                const size = Math.random() * 25 + 15;
+                const left = Math.random() * 100;
+                const duration = Math.random() * 10 + 10;
+                const delay = Math.random() * 5;
+                
+                // Apply styles
+                heart.style.fontSize = `${size}px`;
+                heart.style.left = `${left}%`;
+                heart.style.animationDuration = `${duration}s`;
+                heart.style.animationDelay = `${delay}s`;
+                
+                container.appendChild(heart);
+            }
+        }
+        
+        // Create floating roses for final page
+        function createRoses() {
+            const container = document.getElementById('roses-container');
+            const roseSymbols = ['🌹', '🌷', '🥀', '💐', '🌸'];
+            
+            for (let i = 0; i < 25; i++) {
+                const rose = document.createElement('div');
+                rose.classList.add('rose');
+                rose.innerHTML = roseSymbols[Math.floor(Math.random() * roseSymbols.length)];
+                
+                // Random properties
+                const size = Math.random() * 25 + 20;
+                const left = Math.random() * 100;
+                const duration = Math.random() * 15 + 15;
+                const delay = Math.random() * 5;
+                
+                // Apply styles
+                rose.style.fontSize = `${size}px`;
+                rose.style.left = `${left}%`;
+                rose.style.animationDuration = `${duration}s`;
+                rose.style.animationDelay = `${delay}s`;
+                
+                container.appendChild(rose);
+            }
+        }
+        
+        // Show rose GIF animation
+        function showRoseGif() {
+            const gif = document.getElementById('roseGif');
+            gif.style.display = 'block';
+            
+            // Hide after 5 seconds
+            setTimeout(() => {
+                gif.style.display = 'none';
+            }, 5000);
+        }
+        
+        // Check puzzle answers
+        function checkPuzzle(level) {
+            let answer;
+            let correctAnswer;
+            
+            switch(level) {
+                case 1:
+                    answer = document.getElementById('puzzle1-answer').value.toLowerCase().trim();
+                    correctAnswer = "black";
+                    break;
+                case 2:
+                    answer = document.getElementById('puzzle2-answer').value.toLowerCase().trim();
+                    correctAnswer = "funda";
+                    break;
+                case 3:
+                    answer = document.getElementById('puzzle3-answer').value.toLowerCase().trim();
+                    correctAnswer = "everything";
+                    break;
+                case 4:
+                    // No answer needed for the final page button
+                    correctAnswer = true;
+                    break;
+            }
+            
+            if (answer === correctAnswer || correctAnswer === true) {
+                // Correct answer
+                document.getElementById(`page${level}`).classList.remove('active');
+                
+                if (level < 4) {
+                    document.getElementById(`page${level+1}`).classList.add('active');
+                    document.getElementById(`page${level+1}`).classList.add('success-animation');
+                } else {
+                    document.getElementById('final-page').classList.add('active');
+                    document.getElementById('final-page').classList.add('success-animation');
+                    createRoses();
+                    showRoseGif();
+                }
+                
+                // Create celebration effect
+                createCelebration();
+            } else {
+                // Incorrect answer
+                alert("That's not quite right, my love. Try again! Remember the hint!");
+            }
+        }
+        
+        // Create celebration effect
+        function createCelebration() {
+            for (let i = 0; i < 30; i++) {
+                setTimeout(() => {
+                    const heart = document.createElement('div');
+                    heart.classList.add('floating-heart');
+                    heart.innerHTML = '❤️';
+                    heart.style.fontSize = '2rem';
+                    heart.style.position = 'fixed';
+                    heart.style.top = '50%';
+                    heart.style.left = '50%';
+                    heart.style.zIndex = '1000';
+                    heart.style.opacity = '0.8';
+                    heart.style.transform = 'translate(-50%, -50%)';
+                    heart.style.animation = 'pulse 0.5s ease-in-out';
+                    
+                    document.body.appendChild(heart);
+                    
+                    setTimeout(() => {
+                        document.body.removeChild(heart);
+                    }, 2000);
+                }, i * 100);
+            }
+        }
+        
+        // Reset puzzles
+        function resetPuzzles() {
+            document.querySelectorAll('.page').forEach(page => {
+                page.classList.remove('active');
+            });
+            document.getElementById('page1').classList.add('active');
+            
+            // Clear inputs
+            document.getElementById('puzzle1-answer').value = '';
+            document.getElementById('puzzle2-answer').value = '';
+            document.getElementById('puzzle3-answer').value = '';
+        }
+        
+        // Initialize the page
+        window.addEventListener('load', function() {
+            createHearts();
+        });
+    </script>
+</body>
+</html>
